@@ -1,0 +1,35 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0px;
+}
+.calculator{
+    width: 350px;
+    height: 450px;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.screen{
+    width:320px;
+    height: 70px;
+    border-color: black;
+    border-width: 2px;
+    border-style: solid;
+    margin-top: 15px;
+}
+.buttonContainer {
+    margin: 15px;
+    width:320px;
+    height:auto;
+}
+.buttonContainer > button{
+    width: 70px;
+    height: 70px;
+}
