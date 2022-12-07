@@ -7,29 +7,62 @@ body{
     margin: 0px;
 }
 .calculator{
-    width: 350px;
-    height: 450px;
+    width: 285px;
+    height: 440px;
     border-color: black;
     border-width: 2px;
     border-style: solid;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: rgb(163, 163, 163);
+    border-radius: 5px;
 }
 .screen{
-    width:320px;
+    width:255px;
     height: 70px;
     border-color: black;
     border-width: 2px;
     border-style: solid;
     margin-top: 15px;
+    background-color: rgb(226, 226, 226);
+    border-radius: 5px;
 }
 .buttonContainer {
     margin: 15px;
-    width:320px;
+    width:255px;
     height:auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
-.buttonContainer > button{
-    width: 70px;
-    height: 70px;
+
+.firstRow,
+.secondRow,
+.thirdRow,
+.fourthRow,
+.fifthRow{
+    display: flex;
+    gap: 5px;
+}
+.buttonContainer div button{
+    width: 60px;
+    height: 60px;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.buttonContainer div button:active{
+    background-color: rgb(248, 141, 0);
+    color: black;
+}
+.buttonContainer div button:hover{
+    cursor: pointer;
+}
+.buttonZero{
+    flex-grow: 1;
 }
