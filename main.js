@@ -13,22 +13,23 @@ function divide(a,b){
 let operator;
 function operate(operator,a,b){
     if(operator===add){
-        return add(a,b);
+        return a+b;
     }
     else if(operator===subtract){
-        return subtract(a,b);
+        return a-b;
     }
     else if(operator===multiply){
-        return multiply(a,b);
+        return a*b;
     }
     else if(operator===divide){
-        return divide(a,b);
+        return a/b;
     }
 }
 
-const numBasket=[0]
+const numBasket=[];
+const secondNumBasket=[];
 let screen = document.querySelector('.screen');
-screen.textContent = numBasket;
+screen.textContent = 0;
 
 // THIS ONLY DELETE 1 DIGIT (BACKSPACE BUTTON IDEA)
 // let buttonClear=document.querySelector('.clear');
@@ -42,6 +43,7 @@ buttonClear.addEventListener('click',()=>{
     while(numBasket.length!==0){
         numBasket.pop();
     }
+    secondNumBasket.pop();
     screen.textContent=Number(numBasket.join(''));
 })
 
@@ -103,11 +105,20 @@ buttonComma.addEventListener('click',()=>{
 let buttonAdd = document.querySelector('.add');
 buttonAdd.addEventListener('click',()=>{
     operator=add;
+    secondNumBasket.push(Number(numBasket.join('')));
+    while(numBasket.length!==0){
+        numBasket.pop();
+    }
 })
 let buttonResult = document.querySelector('.result');
 buttonResult.addEventListener('click',()=>{
-    console.log(operator)
-    console.log(Number(numBasket.join('')))
+    let result = operate(operator,Number(secondNumBasket.join('')),Number(numBasket.join('')));
+    screen.textContent=result;
+    while(numBasket.length!==0){
+        numBasket.pop();
+    }
+    secondNumBasket.pop();
+    
 })
 
 
