@@ -2,7 +2,7 @@ let a;
 let b;
 let operator;
 let num='';
-const operand=[0];
+const operand=[];
 
 let screen = document.querySelector('.screen');
 screen.textContent = 0;
@@ -44,9 +44,8 @@ function addButton(){
         divideButton();
     }
     else{
-        if(Number(num)!==0){
-            operand.push(Number(num));
-        }
+        operand.push(Number(num));
+
         num='';
         screen.textContent=num;
         let total=operand[0]
@@ -76,9 +75,7 @@ function subtractButton(){
     }
     else{
         operator=undefined;
-        if(Number(num)!==0){
-            operand.push(Number(num));
-        }
+        operand.push(Number(num));
         num='';
         screen.textContent=num;
         let total=operand[0];
@@ -113,9 +110,6 @@ function multiplyButton(){
         }
         num='';
         screen.textContent=num;
-        if(operand[0]===0){
-            operand[0]=1;
-        }
         let total=operand[0];
         for(let i=1;i<operand.length;i++){
             total*=operand[i];
@@ -147,9 +141,6 @@ function divideButton(){
         }
         num='';
         screen.textContent=num;
-        if(operand[0]===0){
-            operand[0]=1;
-        }
         let total=operand[0];
         for(let i=1;i<operand.length;i++){
             total/=operand[i];
@@ -177,3 +168,20 @@ buttonResult.addEventListener('click',()=>{
         divideButton();
     }
 })
+let buttonPlusMinus = document.querySelector('.plusMinusSign');
+buttonPlusMinus.addEventListener('click',plusMinusButton);
+function plusMinusButton(){
+    if(num.includes('-')===false){
+        num = '-'+num;
+    }
+    else if(num.includes('-')){
+        num=num.replace('-','')
+    }
+    screen.textContent=Number(num);
+}
+let buttonPercent = document.querySelector('.percent');
+buttonPercent.addEventListener('click',percent);
+function percent(){
+    num=num/100;
+    screen.textContent=num;
+}
