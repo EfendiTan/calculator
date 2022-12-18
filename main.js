@@ -15,6 +15,7 @@ function allClear(){
     }
     num='';
     screen.textContent=0;
+    operator=undefined;
 }
 let numberButton = document.querySelectorAll('.number');
 for(let i=0;i<numberButton.length;i++){
@@ -44,8 +45,11 @@ function addButton(){
         divideButton();
     }
     else{
+        operator=undefined;
+        if(num==='.'){
+            num=Number('0.'+num);
+        }
         operand.push(Number(num));
-
         num='';
         screen.textContent=num;
         let total=operand[0]
@@ -75,6 +79,9 @@ function subtractButton(){
     }
     else{
         operator=undefined;
+        if(num==='.'){
+            num=Number('0.'+num);
+        }
         operand.push(Number(num));
         num='';
         screen.textContent=num;
@@ -105,20 +112,28 @@ function multiplyButton(){
     }
     else{
         operator=undefined;
-        if(Number(num)!==0){
-            operand.push(Number(num));
+        if(num!==''){
+            if(num==='.'){
+                num=Number('0.'+num);
+            }
+            if(Number(num)!==0){
+                operand.push(Number(num));
+                num='';
+                screen.textContent=num;
+                let total=operand[0];
+                for(let i=1;i<operand.length;i++){
+                    total*=operand[i];
+                };
+                while(operand.length>0){
+                    operand.pop();
+                };
+                operand.push(total);
+                screen.textContent=operand[0];
+            }
+            else if(Number(num)===0){
+                operand.push(Number(num));
+            }
         }
-        num='';
-        screen.textContent=num;
-        let total=operand[0];
-        for(let i=1;i<operand.length;i++){
-            total*=operand[i];
-        };
-        while(operand.length>0){
-            operand.pop();
-        };
-        operand.push(total);
-        screen.textContent=operand[0];
     }
     operator='multiply';
 }
@@ -136,25 +151,41 @@ function divideButton(){
     }
     else{
         operator=undefined;
-        if(Number(num)!==0){
-            operand.push(Number(num));
+        if(num==='.'){
+            num=Number('0.'+num);
         }
-        num='';
-        screen.textContent=num;
-        let total=operand[0];
-        for(let i=1;i<operand.length;i++){
-            total/=operand[i];
-        };
-        while(operand.length>0){
-            operand.pop();
-        };
-        operand.push(total);
-        screen.textContent=operand[0];
+        if(num!==''){
+            if(Number(num)!==0){
+                operand.push(Number(num));
+                num='';
+                screen.textContent=num;
+                let total=operand[0];
+                for(let i=1;i<operand.length;i++){
+                    total/=operand[i];
+                };
+                while(operand.length>0){
+                    operand.pop();
+                };
+                let isDecimal=total.toString();
+                if(isDecimal.includes('.')){
+                    total=total.toFixed(2);
+                }
+                operand.push(total);
+                screen.textContent=operand[0];
+            }
+            else{
+                allClear();
+                screen.textContent='ERROR';
+                num='';
+            }
+        }
+        
     }
     operator='divide';
 }
 let buttonResult = document.querySelector('.result');
-buttonResult.addEventListener('click',()=>{
+buttonResult.addEventListener('click',result)
+function result(){
     if(operator==='add'){
         addButton();
     }
@@ -167,21 +198,43 @@ buttonResult.addEventListener('click',()=>{
     else if(operator==='divide'){
         divideButton();
     }
-})
+    num='';
+}
 let buttonPlusMinus = document.querySelector('.plusMinusSign');
 buttonPlusMinus.addEventListener('click',plusMinusButton);
 function plusMinusButton(){
-    if(num.includes('-')===false){
-        num = '-'+num;
+    result();
+    operator=undefined;
+    if(screen.textContent!=='ERROR'){
+    if(screen.textContent.includes('-')===false){
+        screen.textContent = '-'+screen.textContent;
+        num+=screen.textContent;
     }
-    else if(num.includes('-')){
-        num=num.replace('-','')
+    else if(screen.textContent.includes('-')){
+        screen.textContent = screen.textContent.replace('-','');
+        num+=screen.textContent;
     }
-    screen.textContent=Number(num);
+    operand[0]=Number(num);
+    num='';
+    }
 }
-let buttonPercent = document.querySelector('.percent');
-buttonPercent.addEventListener('click',percent);
-function percent(){
-    num=num/100;
+let buttonBackspace = document.querySelector('.backspace');
+buttonBackspace.addEventListener('click',backspaceButton);
+function backspaceButton(){
+    if(num.length>0){
+        num=num.slice(0,num.length-1);
+    }
+    else {
+        if(operand.length>0){
+            let result = operand[0];
+            num=result.toString();
+            num=num.slice(0,num.length-1);
+        }
+    }
+    operand[0]=Number(num);
     screen.textContent=num;
+    num='';
+    if(screen.textContent.length===0){
+        screen.textContent=0;
+    }
 }
