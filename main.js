@@ -25,13 +25,13 @@ for(let i=0;i<numberButton.length;i++){
     })
 }
 let commaButton = document.querySelector('.comma');
-commaButton.addEventListener('click',()=>{
+commaButton.addEventListener('click',comma)
+function comma(){
     if(num.includes('.')===false){
         num+='.';
         screen.textContent=num;
     }
-})
-
+}
 let buttonAdd = document.querySelector('.add');
 buttonAdd.addEventListener('click',addButton);
 function addButton(){
@@ -198,7 +198,7 @@ function result(){
     else if(operator==='divide'){
         divideButton();
     }
-    num='';
+    num=operand[0];
 }
 let buttonPlusMinus = document.querySelector('.plusMinusSign');
 buttonPlusMinus.addEventListener('click',plusMinusButton);
@@ -206,9 +206,9 @@ function plusMinusButton(){
     result();
     operator=undefined;
     if(screen.textContent!=='ERROR'){
-    if(screen.textContent.includes('-')===false){
-        screen.textContent = '-'+screen.textContent;
-        num+=screen.textContent;
+        if(screen.textContent.includes('-')===false){
+            screen.textContent = '-'+screen.textContent;
+            num+=screen.textContent;
     }
     else if(screen.textContent.includes('-')){
         screen.textContent = screen.textContent.replace('-','');
@@ -238,3 +238,35 @@ function backspaceButton(){
         screen.textContent=0;
     }
 }
+
+let body = document.querySelector('body');
+body.addEventListener('keydown',(e)=>{
+    if(e.key<=9){
+        num+=e.key;
+        screen.textContent=num;
+    }
+    else if(e.key==='Delete'){
+        allClear();
+    }
+    else if(e.key==='.'){
+        comma();
+    }
+    else if(e.key==='Enter'){
+        result();
+    }
+    else if(e.key==='Backspace'){
+        backspaceButton();
+    }
+    else if(e.key==='+'&&e.shiftKey){
+        addButton();
+    }
+    else if(e.key==='-'){
+        subtractButton();
+    }
+    else if(e.key==='*'&&e.shiftKey){
+        multiplyButton();
+    }
+    else if(e.key==='/'){
+        divideButton();
+    }
+})
