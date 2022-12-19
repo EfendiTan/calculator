@@ -1,11 +1,9 @@
-let a;
-let b;
 let operator;
 let num='';
 const operand=[];
 
 let screen = document.querySelector('.screen');
-screen.textContent = 0;
+screen.textContent = '0';
 
 let clearButton=document.querySelector('.clear');
 clearButton.addEventListener('click',allClear)
@@ -14,7 +12,7 @@ function allClear(){
         operand.pop();
     }
     num='';
-    screen.textContent=0;
+    screen.textContent='0';
     operator=undefined;
 }
 let numberButton = document.querySelectorAll('.number');
@@ -27,8 +25,12 @@ for(let i=0;i<numberButton.length;i++){
 let commaButton = document.querySelector('.comma');
 commaButton.addEventListener('click',comma)
 function comma(){
-    if(num.includes('.')===false){
-        num+='.';
+    if(num===''){
+        num = '0.'+num
+        screen.textContent=num;
+    }
+    else if(num.includes('.')===false){
+        num=num+'.';
         screen.textContent=num;
     }
 }
@@ -46,20 +48,21 @@ function addButton(){
     }
     else{
         operator=undefined;
-        if(num==='.'){
-            num=Number('0.'+num);
-        }
         operand.push(Number(num));
         num='';
         screen.textContent=num;
-        let total=operand[0]
+        let total=operand[0];
         for(let i=1;i<operand.length;i++){
             total+=operand[i];
         };
         while(operand.length>0){
             operand.pop();
         };
-        operand.push(total);
+        let isDecimal=total.toString();
+        if(isDecimal.includes('.')){
+            total=total.toFixed(2);
+        }
+        operand.push(Number(total));
         screen.textContent=operand[0];
     }
     operator='add';
@@ -79,9 +82,6 @@ function subtractButton(){
     }
     else{
         operator=undefined;
-        if(num==='.'){
-            num=Number('0.'+num);
-        }
         operand.push(Number(num));
         num='';
         screen.textContent=num;
@@ -92,7 +92,11 @@ function subtractButton(){
         while(operand.length>0){
             operand.pop();
         };
-        operand.push(total);
+        let isDecimal=total.toString();
+        if(isDecimal.includes('.')){
+            total=total.toFixed(2);
+        }
+        operand.push(Number(total));
         screen.textContent=operand[0];
     }
     operator='subtract';
@@ -113,9 +117,6 @@ function multiplyButton(){
     else{
         operator=undefined;
         if(num!==''){
-            if(num==='.'){
-                num=Number('0.'+num);
-            }
             if(Number(num)!==0){
                 operand.push(Number(num));
                 num='';
@@ -127,11 +128,16 @@ function multiplyButton(){
                 while(operand.length>0){
                     operand.pop();
                 };
-                operand.push(total);
+                let isDecimal=total.toString();
+                if(isDecimal.includes('.')){
+                    total=total.toFixed(2);
+                }
+                operand.push(Number(total));
                 screen.textContent=operand[0];
             }
             else if(Number(num)===0){
                 operand.push(Number(num));
+                num=''
             }
         }
     }
@@ -151,9 +157,6 @@ function divideButton(){
     }
     else{
         operator=undefined;
-        if(num==='.'){
-            num=Number('0.'+num);
-        }
         if(num!==''){
             if(Number(num)!==0){
                 operand.push(Number(num));
@@ -170,7 +173,7 @@ function divideButton(){
                 if(isDecimal.includes('.')){
                     total=total.toFixed(2);
                 }
-                operand.push(total);
+                operand.push(Number(total));
                 screen.textContent=operand[0];
             }
             else{
@@ -198,24 +201,19 @@ function result(){
     else if(operator==='divide'){
         divideButton();
     }
-    num=operand[0];
+    num='';
 }
 let buttonPlusMinus = document.querySelector('.plusMinusSign');
 buttonPlusMinus.addEventListener('click',plusMinusButton);
 function plusMinusButton(){
-    result();
-    operator=undefined;
     if(screen.textContent!=='ERROR'){
         if(screen.textContent.includes('-')===false){
             screen.textContent = '-'+screen.textContent;
-            num+=screen.textContent;
-    }
-    else if(screen.textContent.includes('-')){
-        screen.textContent = screen.textContent.replace('-','');
-        num+=screen.textContent;
-    }
-    operand[0]=Number(num);
-    num='';
+        }
+        else if(screen.textContent.includes('-')){
+            screen.textContent =screen.textContent.replace('-','');
+        }
+        operand[0]=Number(screen.textContent);
     }
 }
 let buttonBackspace = document.querySelector('.backspace');
